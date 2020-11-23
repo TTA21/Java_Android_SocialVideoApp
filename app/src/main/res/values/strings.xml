@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TrabalhoM3</string>
+    <string name="hub_activity">Hub_Activity</string>
+    <string name="register_activity">Register_Activity</string>
+    <string name="category_activity">Category_Activity</string>
+    <string name="file_sender_activity">File_Sender_Activity</string>
+</resources>

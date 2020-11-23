@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "632205933176",
+    "firebase_url": "https://trabalhom3-89e3f.firebaseio.com",
+    "project_id": "trabalhom3-89e3f",
+    "storage_bucket": "trabalhom3-89e3f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632205933176:android:016c2b90fda266a43a0b8d",
+        "android_client_info": {
+          "package_name": "com.example.trabalhom3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632205933176-dthct5h6eo40fkbd8i55v6sf5uoeuu7g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.trabalhom3",
+            "certificate_hash": "ddf51ee1ef20adcb013614123e16508623a9413b"
+          }
+        },
+        {
+          "client_id": "632205933176-g4lm1a199catg94dlodkcaje809t9idb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYmA4SmYS1TfP8n6coCnMeaF1gMlHib0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632205933176-g4lm1a199catg94dlodkcaje809t9idb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,88 @@
+FirebaseDatabase database = FirebaseDatabase.getInstance();
+private FirebaseStorage storage;
+
+        ///Database has data id "Message" , with value "Hello World"
+        //DatabaseReference myRef = database.getReference("message");
+
+        ///Database has node "node1" , with component "message" , with value "value1"
+        //DatabaseReference myRef = database.getReference("node1").child("message");
+
+        DatabaseReference myRef = database.getReference("Video_URL").child("User1").child("videoplayback").child("Date");
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.getValue(String.class);
+                Log.d("", "Value is: " + value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("", "Failed to read value.", error.toException());
+            }
+        });
+
+        /*
+        storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://trabalhom3-89e3f.appspot.com").child("videoplayback.mp4");
+
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                Log.d("FOUND URI:", "onSuccess: " + uri.toString());
+                Video_Player( uri.toString() );
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Log.d("URI NOT FOUND", "");
+            }
+        });
+        */
+
+
+        void Video_Player( String URI ){
+
+                VideoView videoView = findViewById( R.id.videoView );
+                String vidAddress = URI;
+                Uri vidUri = Uri.parse(vidAddress);
+                videoView.setVideoURI(vidUri);
+
+                MediaController vidControl = new MediaController(this);
+                vidControl.setAnchorView(videoView);
+                videoView.setMediaController(vidControl);
+
+            }
+
+
+
+       ///Get all node names under User [ Adin, User1, User2 , User3 ]
+       List<String> nodenames=new ArrayList<String>();
+
+           public void DEBUG(){
+
+               DatabaseReference myRef = database.getReference("Users");
+
+               myRef.addValueEventListener(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(DataSnapshot dataSnapshot) {
+                       // This method is called once with the initial value and again
+                       // whenever data at this location is updated.
+                       for(DataSnapshot snap:dataSnapshot.getChildren()){
+                           nodenames.add(snap.getKey());
+                           Log.d("Key", "onDataChange: " + snap.getKey() );
+                       }
+
+                   }
+                   @Override
+                   public void onCancelled(DatabaseError error) {
+                       // Failed to read value
+                   }
+               });
+
+           }
