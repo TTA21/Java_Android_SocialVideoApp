@@ -60,7 +60,7 @@ public class File_Sender_Activity extends AppCompatActivity {
     private TextView progrssview = null;
     private FirebaseDatabase database;
 
-    FirebaseUser user;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -298,7 +298,13 @@ public class File_Sender_Activity extends AppCompatActivity {
         progrssview.setText( "Atualizando banco de dados" );
         Log.d("URL", selected_video.getURL() );
 
-        String subs_name = selected_video.getVideoName().substring( 0 , selected_video.getVideoName().indexOf(".") );
+        String subs_name;
+        if( selected_video.getVideoName().contains(".") ){
+            subs_name = selected_video.getVideoName().substring( 0 , selected_video.getVideoName().indexOf(".") );
+        }else{
+            subs_name = selected_video.getVideoName();
+        }
+
         Log.d("sub video name", subs_name );
 
         DatabaseReference myRef = database.getReference("Video_URL")
