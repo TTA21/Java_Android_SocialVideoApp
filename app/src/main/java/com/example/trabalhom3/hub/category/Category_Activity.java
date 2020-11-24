@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.trabalhom3.R;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class Category_Activity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         Bundle extras = getIntent().getExtras();
-        chosen_category = extras.getString( "chosen_category" );
+        chosen_category = extras.getString( "chosen_category" ).trim();
         this_username = extras.getString( "this_usrnm" );
 
         Log.d("Chosen Category", chosen_category);
@@ -105,52 +107,45 @@ public class Category_Activity extends AppCompatActivity {
 
     private void get_all_video_names(){
 
-        ///Cicle through all usernames and get their child
-
-        DatabaseReference myRef;
-
         for( int I = 0 ; I < all_usernames.size() ; I++ ){
 
-            curr_usr = all_usernames.get(I);
-            myRef = database.getReference("Video_URL").child( all_usernames.get(I) );
-
-            myRef.addValueEventListener(new ValueEventListener() {
+            DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+            //Query query = rootRef.child("Sign Up").orderByChild("E_Mail").equalsTo("ahmed.elnakib96@xxxx.com");
+            Query query = rootRef.child("Video_URL").child( all_usernames.get(I) ).orderByChild("Category").equalTo( chosen_category.trim() );
+            ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    // This method is called once with the initial value and again
-                    // whenever data at this location is updated.
+                    ArrayList<String> temp_usr = new ArrayList<String>();
+                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                    ArrayList<String> temp_user = new ArrayList<String>();
-                    //temp_user.add( curr_usr );
+                        String key = ds.getKey();
+                        temp_usr.add( key );
 
-                    for(DataSnapshot snap:dataSnapshot.getChildren()){
-                        temp_user.add(snap.getKey());
                     }
 
-                    all_videonames.add( temp_user );    ////User1   :   video1 , video 2 , video 3
-                                                        ////User2   :   video1 , video 2
+                    all_videonames.add( temp_usr );
 
                 }
+
                 @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.d("ERROR", "onCancelled: " + "Failure to load database");
-                    Toast.makeText( cont , "Falha ao carregar o banco de dados" , Toast.LENGTH_LONG ).show();
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.d("ERROR", databaseError.getMessage());
                 }
-            });
+            };
+            query.addListenerForSingleValueEvent(valueEventListener);
 
         }
 
+
     }
+
 
     private void make_list_Strings(){
 
         if( !all_videonames.isEmpty() && !all_usernames.isEmpty() ){
 
-            list_strings = new ArrayList<String>();
             for( int I = 0 ; I < all_videonames.size() ; I++ ){
 
-                //String username = all_videonames.get( I ).get( 0 );
                 String username = all_usernames.get(I);
 
                 for( int J = 0 ; J < all_videonames.get( I ).size() ; J++ ){
