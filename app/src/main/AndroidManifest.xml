@@ -25,6 +25,8 @@
         <activity android:name=".Register_Activity" android:label="@string/register_activity"></activity>
         <activity android:name=".hub.category.Category_Activity" android:label="@string/category_activity"></activity>
         <activity android:name=".hub.file_sender.File_Sender_Activity" android:label="@string/file_sender_activity"></activity>
+        <activity android:name=".hub.this_channel.This_Channel_Activity" android:label="@string/this_channel_activity"></activity>
+        <activity android:name=".hub.file_sender.Video_Viewer_Activity" android:label="@string/video_viewer_activity"></activity>
 
     </application>
 

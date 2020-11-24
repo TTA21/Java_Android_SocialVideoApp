@@ -4,4 +4,6 @@
     <string name="register_activity">Register_Activity</string>
     <string name="category_activity">Category_Activity</string>
     <string name="file_sender_activity">File_Sender_Activity</string>
+    <string name="this_channel_activity">This_Channel_Activity</string>
+    <string name="video_viewer_activity">Video_Viewer_Activity</string>
 </resources>

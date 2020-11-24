@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.trabalhom3.R;
 import com.example.trabalhom3.hub.category.Category_Activity;
 import com.example.trabalhom3.hub.file_sender.File_Sender_Activity;
+import com.example.trabalhom3.hub.this_channel.This_Channel_Activity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -182,6 +183,8 @@ public class Hub_Activity extends AppCompatActivity {
 
             Intent category = new Intent( cont , Category_Activity.class);
             category.putExtra( "chosen_category" , subs );
+            category.putExtra( "this_usrnm" , this_username );
+
             startActivity( category );
 
         }
@@ -201,5 +204,15 @@ public class Hub_Activity extends AppCompatActivity {
     }
 
     public void see_channel_func(View view) {
+
+        if( !category_names_for_fileSender.isEmpty() ){
+
+            Intent view_channel = new Intent( this , This_Channel_Activity.class );
+            view_channel.putStringArrayListExtra( "cat_names" , category_names_for_fileSender );
+            view_channel.putExtra( "this_usernm" , this_username );
+            startActivity( view_channel );
+
+        }
+
     }
 }
