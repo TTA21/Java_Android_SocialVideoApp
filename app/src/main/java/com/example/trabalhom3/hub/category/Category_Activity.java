@@ -215,6 +215,7 @@ public class Category_Activity extends AppCompatActivity {
             Intent video_viewer = new Intent( cont , Video_Viewer_Activity.class);
             video_viewer.putExtra( "username" , username );
             video_viewer.putExtra( "videoname" , videoname );
+            video_viewer.putExtra( "this_username" , this_username );
 
             startActivity( video_viewer );
 

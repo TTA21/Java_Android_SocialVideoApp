@@ -29,8 +29,11 @@ import java.util.TimerTask;
 
 public class Video_Viewer_Activity extends AppCompatActivity {
 
+    ///TODO : Make the comment section
+
     private FirebaseDatabase database;
     private String chosen_user = "";
+    private String this_user = "";
     private String chosen_video = "";
     private Context cont = this;
 
@@ -47,6 +50,7 @@ public class Video_Viewer_Activity extends AppCompatActivity {
 
         chosen_user = extras.getString( "username" ).trim();
         chosen_video = extras.getString( "videoname" ).trim();
+        this_user = extras.getString( "this_username" );
 
         selected_video = new Selected_video();
 
@@ -79,63 +83,29 @@ public class Video_Viewer_Activity extends AppCompatActivity {
             }
         });
 
-        myRef = database.getReference("Video_URL").child( chosen_user ).child( chosen_video ).child( "Dislike_Num" );
+        myRef = database.getReference("Video_URL").child( chosen_user ).child( chosen_video );
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                Log.d("Found Dislike: ", String.valueOf(dataSnapshot.getValue()) );
-                selected_video.setDislike_Num( Long.valueOf( String.valueOf(dataSnapshot.getValue()) ) );
+
+                selected_video.setDislike_Num(Long.valueOf(dataSnapshot.child( "Dislike_Num" ).getValue().toString()));
+                selected_video.setLike_Num( Long.valueOf( dataSnapshot.child( "Like_Num" ).getValue().toString()));
+                selected_video.setViewCount( Long.valueOf( dataSnapshot.child( "ViewCount" ).getValue().toString()));
+                selected_video.setURL( dataSnapshot.child( "URL" ).getValue().toString() );
+
                 update_dislike_count();
-
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.d("ERROR", "onCancelled: " + "Failure to load database");
-                Toast.makeText( cont , "Falha ao carregar o banco de dados" , Toast.LENGTH_LONG ).show();
-            }
-        });
-
-        myRef = database.getReference("Video_URL").child( chosen_user ).child( chosen_video ).child( "Like_Num" );
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                Log.d("Found Like: ", String.valueOf(dataSnapshot.getValue()) );
-                selected_video.setLike_Num( Long.valueOf( String.valueOf(dataSnapshot.getValue()) ) );
                 update_like_count();
-
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.d("ERROR", "onCancelled: " + "Failure to load database");
-                Toast.makeText( cont , "Falha ao carregar o banco de dados" , Toast.LENGTH_LONG ).show();
-            }
-        });
-
-        myRef = database.getReference("Video_URL").child( chosen_user ).child( chosen_video ).child( "ViewCount" );
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-
-                Log.d("Found ViewCount: ", String.valueOf(dataSnapshot.getValue()) );
-                selected_video.setViewCount( Long.valueOf( String.valueOf(dataSnapshot.getValue()) ) );
                 update_viewCount();
 
                 if( !increased_once ){
-                    viewcount_oncreate = Long.valueOf( String.valueOf(dataSnapshot.getValue()) );
+                    viewcount_oncreate = Long.valueOf( dataSnapshot.child( "ViewCount" ).getValue().toString());
                     increase_viewcount();
                 }
 
+                Video_Player( selected_video.getURL() );
 
             }
             @Override
@@ -145,6 +115,7 @@ public class Video_Viewer_Activity extends AppCompatActivity {
                 Toast.makeText( cont , "Falha ao carregar o banco de dados" , Toast.LENGTH_LONG ).show();
             }
         });
+
 
         selected_video.setVideoName( chosen_video );
         selected_video.setThis_username( chosen_user );
@@ -158,12 +129,12 @@ public class Video_Viewer_Activity extends AppCompatActivity {
 
     public void update_dislike_count(){
         TextView like_view = findViewById( R.id.like_num );
-        like_view.setText( String.valueOf( selected_video.getLike_Num() ) + " Dislikes" );
+        like_view.setText( String.valueOf( selected_video.getDislike_Num() ) + " Dislikes" );
     }
 
     public void update_like_count(){
         TextView dislike_view = findViewById( R.id.dislike_num );
-        dislike_view.setText( String.valueOf( selected_video.getDislike_Num() ) + " Likes" );
+        dislike_view.setText( String.valueOf( selected_video.getLike_Num() ) + " Likes" );
     }
 
     public void Video_Player( String URI ){
@@ -190,11 +161,169 @@ public class Video_Viewer_Activity extends AppCompatActivity {
 
     }
 
+    private String decision = "";
+    private boolean currently_working = false;
 
     public void like_pressed(View view) {
+
+        if( !currently_working ) {
+            Log.d("ALERT", "Like button pressed");
+            decision = "Liked";
+            currently_working = true;
+            single_check = false;
+            update_like_dislike();
+        }
+
     }
 
+
     public void dislike_pressed(View view) {
+
+        if( !currently_working ) {
+            Log.d("ALERT", "Dislike button pressed");
+            decision = "Disliked";
+            currently_working = true;
+            single_check = false;
+            update_like_dislike();
+        }
+
+    }
+
+    private Selected_video selected_video_to_decide;
+    private String this_user_prev_choice = "";
+    private boolean single_check = false;
+
+    private void update_like_dislike(){
+
+        selected_video_to_decide = new Selected_video();
+
+        ///Get all relevant values,
+        ///Dislike_Num , Like_Num , Name : Like/Dislike
+
+        DatabaseReference myRef = database.getReference("Video_URL").child( chosen_user ).child( chosen_video );
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                if( !single_check ){
+
+                    single_check = true;
+                    selected_video_to_decide.setDislike_Num( Long.valueOf(dataSnapshot.child( "Dislike_Num" ).getValue().toString()) );
+                    selected_video_to_decide.setLike_Num( Long.valueOf(dataSnapshot.child( "Like_Num" ).getValue().toString()) );
+
+                    Log.d( "Current Num of Likes: " , String.valueOf(selected_video_to_decide.getLike_Num()) );
+                    Log.d( "Current Num of Dislik: " , String.valueOf(selected_video_to_decide.getDislike_Num()) );
+
+                    if( dataSnapshot.hasChild( this_user ) ){
+                        this_user_prev_choice = dataSnapshot.child( this_user ).getValue().toString();
+                        Log.d( "Users prev choice: " , this_user_prev_choice);
+                    }else{
+                        this_user_prev_choice = "NONE";
+                        Log.d( "ALERT" , "User has no previous choice");
+                    }
+
+                    make_changes();
+
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.d("ERROR", "onCancelled: " + "Failure to load database");
+                Toast.makeText( cont , "Falha ao carregar o banco de dados" , Toast.LENGTH_LONG ).show();
+            }
+        });
+
+    }
+
+    private void make_changes(){
+
+        if( decision.contains( "Liked" ) && this_user_prev_choice.contains( "Liked" ) ){
+
+            Log.d( "ALERT" , "No change 1");
+            Toast.makeText( this , "Você já gostou desse video" , Toast.LENGTH_LONG ).show();
+
+        }else if( decision.contains( "Disliked" ) && this_user_prev_choice.contains( "Disliked" ) ){
+
+            Log.d( "ALERT" , "No change 2");
+            Toast.makeText( this , "Você já não gostou desse video" , Toast.LENGTH_LONG ).show();
+
+        }else if( decision.contains( "Liked" ) && this_user_prev_choice.contains( "Disliked" ) ){
+
+            Log.d( "ALERT" , "Changing 1");
+            selected_video_to_decide.setDislike_Num( selected_video_to_decide.getDislike_Num() - 1 );
+            selected_video_to_decide.setLike_Num( selected_video_to_decide.getLike_Num() + 1 );
+            validate_changes();
+
+        }else if( decision.contains( "Disliked" ) && this_user_prev_choice.contains( "Liked" ) ){
+
+            Log.d( "ALERT" , "Changing 2");
+            selected_video_to_decide.setDislike_Num( selected_video_to_decide.getDislike_Num() + 1 );
+            selected_video_to_decide.setLike_Num( selected_video_to_decide.getLike_Num() - 1 );
+            validate_changes();
+
+        }else if( decision.contains( "Disliked" ) && this_user_prev_choice.contains( "NONE" ) ){
+
+            selected_video_to_decide.setDislike_Num( selected_video_to_decide.getDislike_Num() + 1 );
+            validate_changes();
+
+        }else if( decision.contains( "Liked" ) && this_user_prev_choice.contains( "NONE" ) ){
+
+            selected_video_to_decide.setLike_Num( selected_video_to_decide.getLike_Num() + 1 );
+            validate_changes();
+
+        }else{
+            Log.d( "ALERT" , "No Change 3");
+        }
+
+    }
+
+    private void validate_changes(){
+
+        {
+            Log.d( "ALERT" , "Changing Dislikes");
+            DatabaseReference myRef = database.getReference("Video_URL")
+                    .child( chosen_user )
+                    .child( chosen_video )
+                    .child( "Dislike_Num" );
+            myRef.setValue( selected_video_to_decide.getDislike_Num() );
+        }
+
+        {
+            Log.d( "ALERT" , "Changing Likes");
+            DatabaseReference myRef = database.getReference("Video_URL")
+                    .child( chosen_user )
+                    .child( chosen_video )
+                    .child( "Like_Num" );
+            myRef.setValue( selected_video_to_decide.getLike_Num() );
+        }
+
+        {
+            Log.d( "ALERT" , "Changing Decision");
+            DatabaseReference myRef = database.getReference("Video_URL")
+                    .child( chosen_user )
+                    .child( chosen_video )
+                    .child( this_user );
+            myRef.setValue( decision );
+        }
+
+        Log.d( "ALERT" , "Done");
+
+        Toast.makeText( this , "Atualizado" , Toast.LENGTH_LONG ).show();
+        reset_params();
+
+
+    }
+
+    private void reset_params(){
+
+        currently_working = false;
+        selected_video_to_decide = new Selected_video();
+        this_user_prev_choice = "";
+
     }
 
     public void exit_func(View view) {
