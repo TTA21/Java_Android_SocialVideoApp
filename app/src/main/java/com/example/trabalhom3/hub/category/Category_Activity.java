@@ -72,9 +72,6 @@ public class Category_Activity extends AppCompatActivity {
 
         }
 
-        all_usernames = new ArrayList<String>();
-        all_videonames = new ArrayList< ArrayList<String> >();
-
     }
 
     private void get_all_usernames(){
@@ -142,21 +139,34 @@ public class Category_Activity extends AppCompatActivity {
 
     private void make_list_Strings(){
 
-        if( !all_videonames.isEmpty() && !all_usernames.isEmpty() ){
+        ArrayList<String> all_usernames_buffer = all_usernames;
+        ArrayList< ArrayList<String> > all_videonames_buffer = all_videonames;
 
-            for( int I = 0 ; I < all_videonames.size() ; I++ ){
+        if( !all_videonames_buffer.isEmpty() && !all_usernames_buffer.isEmpty() && all_videonames_buffer.size() == all_usernames_buffer.size() ){
 
-                String username = all_usernames.get(I);
+            for( int I = 0 ; I < all_videonames_buffer.size() ; I++ ){
 
-                for( int J = 0 ; J < all_videonames.get( I ).size() ; J++ ){
+                try{
 
-                    String videoname = all_videonames.get(I).get( J );
+                    String username = all_usernames_buffer.get(I);
 
-                    list_strings.add( username + " : " + videoname );
+                    for( int J = 0 ; J < all_videonames_buffer.get( I ).size() ; J++ ){
 
+                        String videoname = all_videonames_buffer.get(I).get( J );
+
+                        list_strings.add( username + " : " + videoname );
+
+                    }
+
+                }catch( ArrayIndexOutOfBoundsException ex ){
+                    Log.d("ALERT", "make_list_Strings: " + ex.getMessage() );
                 }
 
+
             }
+
+            all_usernames = new ArrayList<String>();
+            all_videonames = new ArrayList< ArrayList<String> >();
 
         }
 
