@@ -6,4 +6,5 @@
     <string name="file_sender_activity">File_Sender_Activity</string>
     <string name="this_channel_activity">This_Channel_Activity</string>
     <string name="video_viewer_activity">Video_Viewer_Activity</string>
+    <string name="video_editor_activity">Video_Editor_Activity</string>
 </resources>

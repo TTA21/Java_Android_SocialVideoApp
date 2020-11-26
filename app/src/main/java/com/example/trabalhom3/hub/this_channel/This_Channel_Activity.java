@@ -1,5 +1,6 @@
 package com.example.trabalhom3.hub.this_channel;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.trabalhom3.R;
+import com.example.trabalhom3.hub.Hub_Activity;
+import com.example.trabalhom3.hub.file_sender.Video_Editor_Activity;
 import com.example.trabalhom3.hub.file_sender.Video_Viewer_Activity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -57,19 +60,32 @@ public class This_Channel_Activity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot ds : dataSnapshot.getChildren()) { ///Get all videonames
+                if (dataSnapshot != null) {
 
-                    videonames.add( ds.getKey() );
-                    Log.d("New videoname", ds.getKey() );
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) { ///Get all videonames
 
-                    sum_views += Long.valueOf(ds.child( "ViewCount" ).getValue().toString());
-                    sum_likes += Long.valueOf(ds.child( "Like_Num" ).getValue().toString());
-                    sum_dislikes += Long.valueOf(ds.child( "Dislike_Num" ).getValue().toString());
+                        if (ds != null) {
+
+                            videonames.add(ds.getKey());
+                            Log.d("New videoname", ds.getKey());
+
+                            try{
+
+                                sum_views += Long.valueOf(ds.child("ViewCount").getValue().toString());
+                                sum_likes += Long.valueOf(ds.child("Like_Num").getValue().toString());
+                                sum_dislikes += Long.valueOf(ds.child("Dislike_Num").getValue().toString());
+
+                            }catch ( NullPointerException npe ){
+
+                            }
+
+                        }
+
+                    }
+
+                    update_overlay();
 
                 }
-
-                update_overlay();
-
             }
 
             @Override
@@ -108,6 +124,8 @@ public class This_Channel_Activity extends AppCompatActivity {
 
     }
 
+    private Context cont = this;
+
     private AdapterView.OnItemClickListener listClick = new AdapterView.OnItemClickListener(){
 
         @Override
@@ -115,7 +133,11 @@ public class This_Channel_Activity extends AppCompatActivity {
 
             String itemAtPosition = String.valueOf( parent.getItemAtPosition(position) );
 
-            ////TODO : Make a way to change video names and categoies
+            Intent video_editor = new Intent( cont , Video_Editor_Activity.class );
+            video_editor.putExtra( "this_usrnm" , this_username );
+            video_editor.putExtra( "chosen_video" , itemAtPosition );
+            video_editor.putStringArrayListExtra( "categories" , category_names );
+            startActivity( video_editor );
 
         }
     };
