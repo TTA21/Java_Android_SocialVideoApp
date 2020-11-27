@@ -58,7 +58,7 @@ public class Category_Activity extends AppCompatActivity {
 
     private void update_list_videos(){
 
-        //if( !list_strings.isEmpty() ){
+        if( !list_strings.isEmpty() ){
 
             ListView list_videos = findViewById( R.id.list_videos );
             ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list_strings);
@@ -66,7 +66,7 @@ public class Category_Activity extends AppCompatActivity {
             list_videos.setOnItemClickListener( listClick );
             list_strings = new ArrayList<String>();
 
-        //}
+        }
 
     }
 
@@ -98,8 +98,12 @@ public class Category_Activity extends AppCompatActivity {
 
     private String curr_usr = "";
 
+    private int this_index = 0;
+    private int final_index = 0;
+
     private void get_all_video_names(){
 
+        final_index = all_usernames.size();
         for( int I = 0 ; I < all_usernames.size() ; I++ ){
 
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -108,6 +112,8 @@ public class Category_Activity extends AppCompatActivity {
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    this_index++;
                     ArrayList<String> temp_usr = new ArrayList<String>();
                     for(DataSnapshot ds : dataSnapshot.getChildren()) {
 
@@ -118,7 +124,9 @@ public class Category_Activity extends AppCompatActivity {
 
                     all_videonames.add( temp_usr );
 
-                    make_list_Strings();
+                    if( this_index == final_index ){
+                        make_list_Strings();
+                    }
 
                 }
 
@@ -131,11 +139,12 @@ public class Category_Activity extends AppCompatActivity {
 
         }
 
-
     }
 
 
     private void make_list_Strings(){
+
+        this_index++;
 
         ArrayList<String> all_usernames_buffer = all_usernames;
         ArrayList< ArrayList<String> > all_videonames_buffer = all_videonames;

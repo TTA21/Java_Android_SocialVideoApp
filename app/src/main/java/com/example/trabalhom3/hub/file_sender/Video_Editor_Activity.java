@@ -164,10 +164,13 @@ public class Video_Editor_Activity extends AppCompatActivity {
 
         DatabaseReference myRef = database.getReference("Video_URL").child( this_username );
 
-        {
-
+        {   //old videoname
             myRef.child( this_videoname ).removeValue();    ///delete previous video metadata, along with everything user added
+        }
 
+        {   //Comments
+            DatabaseReference commRef = database.getReference("Comments").child( "Videos" ).child( this_videoname );
+            commRef.removeValue();
         }
 
         {
