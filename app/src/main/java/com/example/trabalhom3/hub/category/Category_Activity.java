@@ -48,8 +48,7 @@ public class Category_Activity extends AppCompatActivity {
 
         Log.d("Chosen Category", chosen_category);
 
-        update_list_videos();
-        startTimer();
+        get_all_usernames();
 
     }
 
@@ -59,10 +58,7 @@ public class Category_Activity extends AppCompatActivity {
 
     private void update_list_videos(){
 
-        get_all_usernames();
-        make_list_Strings();
-
-        if( !list_strings.isEmpty() ){
+        //if( !list_strings.isEmpty() ){
 
             ListView list_videos = findViewById( R.id.list_videos );
             ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list_strings);
@@ -70,7 +66,7 @@ public class Category_Activity extends AppCompatActivity {
             list_videos.setOnItemClickListener( listClick );
             list_strings = new ArrayList<String>();
 
-        }
+        //}
 
     }
 
@@ -122,6 +118,8 @@ public class Category_Activity extends AppCompatActivity {
 
                     all_videonames.add( temp_usr );
 
+                    make_list_Strings();
+
                 }
 
                 @Override
@@ -165,40 +163,14 @@ public class Category_Activity extends AppCompatActivity {
 
             }
 
-            all_usernames = new ArrayList<String>();
-            all_videonames = new ArrayList< ArrayList<String> >();
-
         }
 
+        all_usernames = new ArrayList<String>();
+        all_videonames = new ArrayList< ArrayList<String> >();
+
+        update_list_videos();
+
     }
-
-    private Timer timer;
-    private TimerTask timerTask;
-    private Handler handler = new Handler();
-
-    //To stop timer
-    private void stopTimer(){
-        if(timer != null){
-            timer.cancel();
-            timer.purge();
-        }
-    }
-
-    //To start timer
-    private void startTimer(){
-        timer = new Timer();
-        timerTask = new TimerTask() {
-            public void run() {
-                handler.post(new Runnable() {
-                    public void run(){
-                        update_list_videos();
-                    }
-                });
-            }
-        };
-        timer.schedule(timerTask, 3000, 3000);
-    }
-
 
     private AdapterView.OnItemClickListener listClick = new AdapterView.OnItemClickListener(){
 
@@ -225,7 +197,6 @@ public class Category_Activity extends AppCompatActivity {
 
     public void exit_btn(View view) {
 
-        stopTimer();
         finish();
 
     }

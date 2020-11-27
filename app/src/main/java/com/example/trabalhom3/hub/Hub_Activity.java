@@ -43,8 +43,7 @@ public class Hub_Activity extends AppCompatActivity {
         Bundle extra = getIntent().getExtras();
         this_username = extra.getString( "this_usrnm" );
 
-        update_category_list();
-        startTimer();
+        get_category_names();   ///And its values
 
     }
 
@@ -52,12 +51,6 @@ public class Hub_Activity extends AppCompatActivity {
     private ArrayList<String> category_values=new ArrayList<String>();
     private ArrayList<String> category_names_for_fileSender =new ArrayList<String>();
     private Context cont = this;
-
-    public void update_category_list(){
-
-        get_category_names();   ///And its values
-
-    }
 
     private void change_category_list_values(){
 
@@ -108,12 +101,15 @@ public class Hub_Activity extends AppCompatActivity {
 
     }
 
+    private int this_index = 0;
+    private int final_index = 0;
+
     public void get_category_values(){
 
         DatabaseReference myRef;
-
         Log.d("CategoryNames size", "" + category_names.size() );
 
+        final_index = category_names.size();
         for( int I = 0 ; I < category_names.size() ; I++ ){
 
                 myRef = database.getReference("Categories").child( category_names.get(I) ).child( "Num_of_Videos" );
@@ -124,7 +120,13 @@ public class Hub_Activity extends AppCompatActivity {
                         // This method is called once with the initial value and again
                         // whenever data at this location is updated.
                         String value = Long.toString(dataSnapshot.getValue(Long.class));
+                        this_index++;
                         category_values.add( value );
+
+                        if( this_index == final_index ){
+                            change_category_list_values();
+                            this_index = 0;
+                        }
 
                     }
                     @Override
@@ -137,39 +139,7 @@ public class Hub_Activity extends AppCompatActivity {
 
             }
 
-        Log.d("category_values size", "" + category_values.size());
-        change_category_list_values();
     }
-
-
-    ////Every 3 seconds the checksu of the table will be checked, if different, update list
-    private Timer timer;
-    private TimerTask timerTask;
-    private Handler handler = new Handler();
-
-    //To stop timer
-    private void stopTimer(){
-        if(timer != null){
-            timer.cancel();
-            timer.purge();
-        }
-    }
-
-    //To start timer
-    private void startTimer(){
-        timer = new Timer();
-        timerTask = new TimerTask() {
-            public void run() {
-                handler.post(new Runnable() {
-                    public void run(){
-                        update_category_list();
-                    }
-                });
-            }
-        };
-        timer.schedule(timerTask, 3000, 3000);
-    }
-
 
     private AdapterView.OnItemClickListener listClick = new AdapterView.OnItemClickListener(){
 
