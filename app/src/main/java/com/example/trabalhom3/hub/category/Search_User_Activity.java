@@ -1,9 +1,11 @@
 package com.example.trabalhom3.hub.category;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -14,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.trabalhom3.R;
+import com.example.trabalhom3.hub.file_sender.Video_Viewer_Activity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -177,11 +180,27 @@ public class Search_User_Activity extends AppCompatActivity {
             ListView list_videos = findViewById( R.id.user_videos_list );
             ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, videonames);
             list_videos.setAdapter(arrayAdapter);
-            //list_videos.setOnItemClickListener( listClick );
-            //list_strings = new ArrayList<String>();
+            list_videos.setOnItemClickListener( listClick );
 
         }
 
     }
+
+    private AdapterView.OnItemClickListener listClick = new AdapterView.OnItemClickListener(){
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            String itemAtPosition = String.valueOf( parent.getItemAtPosition(position) );
+
+            Intent video_viewer = new Intent( cont , Video_Viewer_Activity.class);
+            video_viewer.putExtra( "username" , user_to_find_field );
+            video_viewer.putExtra( "videoname" , itemAtPosition );
+            video_viewer.putExtra( "this_username" , this_user );
+
+            startActivity( video_viewer );
+
+        }
+    };
 
 }
