@@ -46,8 +46,8 @@
 
     <ListView
         android:id="@+id/user_videos_list"
-        android:layout_width="408dp"
-        android:layout_height="474dp"
+        android:layout_width="404dp"
+        android:layout_height="415dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -66,4 +66,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.285"
         android:onClick="search_by_spinner_func"/>
+
+    <Button
+        android:id="@+id/videoname_func"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Procurar por nome de video"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.366"
+        android:onClick="search_by_videoname_func"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

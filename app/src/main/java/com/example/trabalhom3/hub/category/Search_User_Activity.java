@@ -203,4 +203,12 @@ public class Search_User_Activity extends AppCompatActivity {
         }
     };
 
+    public void search_by_videoname_func(View view) {
+
+        Intent search_videoname = new Intent( cont , Search_VideoName_Activity.class);
+        search_videoname.putExtra( "this_username" , this_user );
+
+        startActivity( search_videoname );
+
+    }
 }

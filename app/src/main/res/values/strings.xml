@@ -8,4 +8,5 @@
     <string name="video_viewer_activity">Video_Viewer_Activity</string>
     <string name="video_editor_activity">Video_Editor_Activity</string>
     <string name="search_user_activity">Search_User_Activity</string>
+    <string name="search_videoname_activity">Search_VideoName_Activity</string>
 </resources>

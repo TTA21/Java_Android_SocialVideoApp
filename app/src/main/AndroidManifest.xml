@@ -29,6 +29,7 @@
         <activity android:name=".hub.file_sender.Video_Viewer_Activity" android:label="@string/video_viewer_activity"></activity>
         <activity android:name=".hub.this_channel.Video_Editor_Activity" android:label="@string/video_editor_activity"></activity>
         <activity android:name=".hub.category.Search_User_Activity" android:label="@string/search_user_activity"></activity>
+        <activity android:name=".hub.category.Search_VideoName_Activity" android:label="@string/search_videoname_activity"></activity>
 
     </application>
 
