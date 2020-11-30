@@ -6,52 +6,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/send_video_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enviar video"
+    <EditText
+        android:id="@+id/user_to_find_field"
+        android:layout_width="386dp"
+        android:layout_height="52dp"
+        android:ems="10"
+        android:hint="Usuario a pesquizar"
+        android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023"
-        android:onClick="send_video_func"/>
-
-    <Button
-        android:id="@+id/this_channel_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="see_channel_func"
-        android:text="Ver canal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.535"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
 
-    <ListView
-        android:id="@+id/category_list"
+    <Spinner
+        android:id="@+id/usernames_spinner"
         android:layout_width="409dp"
-        android:layout_height="665dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.969" />
+        app:layout_constraintVertical_bias="0.217" />
 
     <Button
-        android:id="@+id/search_channel_btn"
+        android:id="@+id/search_user_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Procurar"
+        android:text="Pesquizar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.023"
-        android:onClick="search_user_func"/>
+        app:layout_constraintVertical_bias="0.124"
+        android:onClick="search_database_forUser_func"/>
+
+    <ListView
+        android:id="@+id/user_videos_list"
+        android:layout_width="408dp"
+        android:layout_height="474dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.991" />
+
+    <Button
+        android:id="@+id/search_by_spinner_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pesquizar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.285"
+        android:onClick="search_by_spinner_func"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

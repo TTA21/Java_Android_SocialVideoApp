@@ -1,4 +1,4 @@
-package com.example.trabalhom3.hub.file_sender;
+package com.example.trabalhom3.hub.this_channel;
 
 import android.net.Uri;
 import android.os.Bundle;

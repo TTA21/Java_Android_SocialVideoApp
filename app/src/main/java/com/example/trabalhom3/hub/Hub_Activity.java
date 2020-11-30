@@ -3,7 +3,6 @@ package com.example.trabalhom3.hub;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.trabalhom3.R;
 import com.example.trabalhom3.hub.category.Category_Activity;
+import com.example.trabalhom3.hub.category.Search_User_Activity;
 import com.example.trabalhom3.hub.file_sender.File_Sender_Activity;
 import com.example.trabalhom3.hub.this_channel.This_Channel_Activity;
 import com.google.firebase.database.DataSnapshot;
@@ -24,9 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Hub_Activity extends AppCompatActivity {
 
@@ -183,6 +180,14 @@ public class Hub_Activity extends AppCompatActivity {
             startActivity( view_channel );
 
         }
+
+    }
+
+    public void search_user_func(View view) {
+
+        Intent search_user = new Intent( this , Search_User_Activity.class );
+        search_user.putExtra( "this_usernm" , this_username );
+        startActivity( search_user );
 
     }
 }

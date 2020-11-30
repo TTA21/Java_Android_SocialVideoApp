@@ -14,9 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.trabalhom3.R;
-import com.example.trabalhom3.hub.Hub_Activity;
-import com.example.trabalhom3.hub.file_sender.Video_Editor_Activity;
-import com.example.trabalhom3.hub.file_sender.Video_Viewer_Activity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

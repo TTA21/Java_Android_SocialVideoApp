@@ -107,7 +107,6 @@ public class Category_Activity extends AppCompatActivity {
         for( int I = 0 ; I < all_usernames.size() ; I++ ){
 
             DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-            //Query query = rootRef.child("Sign Up").orderByChild("E_Mail").equalsTo("ahmed.elnakib96@xxxx.com");
             Query query = rootRef.child("Video_URL").child( all_usernames.get(I) ).orderByChild("Category").equalTo( chosen_category.trim() );
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
