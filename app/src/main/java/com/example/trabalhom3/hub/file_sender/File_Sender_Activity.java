@@ -120,13 +120,13 @@ public class File_Sender_Activity extends AppCompatActivity {
 
             String filetype = MimeTypeMap.getFileExtensionFromUrl(fullFilePath);
 
-            if( filetype.contains( "mp4" ) || filetype.contains( "mp3" ) || filetype.contains( "ogg" ) ){
+            //if( filetype.contains( "mp4" ) || filetype.contains( "mp3" ) || filetype.contains( "ogg" ) ){
 
-                detail_file( fullFilePath , selectedURI , selectedFile );
+                    detail_file( fullFilePath , selectedURI , selectedFile );
 
-            }else{
-                Toast.makeText( cont , "Arquivo escolhido inválido" , Toast.LENGTH_LONG ).show();
-            }
+            //}else{
+            //    Toast.makeText( cont , "Arquivo escolhido inválido" , Toast.LENGTH_LONG ).show();
+            //}
 
     }
 
@@ -161,6 +161,15 @@ public class File_Sender_Activity extends AppCompatActivity {
         if( chosen_file_name.isEmpty() ){
             chosen_file_name = selected_file.getName();
             chosen_file_name_obj.setText( chosen_file_name );
+        }
+
+        if(     chosen_file_name.contains( "." ) ||
+                chosen_file_name.contains( "#" ) ||
+                chosen_file_name.contains( "$" ) ||
+                chosen_file_name.contains( "[" ) ||
+                chosen_file_name.contains( "]" ) ){
+            Toast.makeText( cont , "Nome do video não pode conter '.' '#' '$' '[' ']'" , Toast.LENGTH_LONG ).show();
+            return;
         }
 
         selected_video.setVideoName( chosen_file_name );
